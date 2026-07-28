@@ -1,0 +1,164 @@
+openapi: 3.1.0
+info:
+  title: Chatbot API
+  version: 1.0.0
+  description: Simple chatbot backend API with Express
+servers:
+  - url: http://localhost:3000
+    description: Development server
+paths:
+  /health:
+    get:
+      summary: Health check endpoint
+      description: Returns the server status and current timestamp
+      responses:
+        '200':
+          description: Server is healthy
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthResponse'
+  /api/chat:
+    post:
+      summary: Send a message to the chatbot
+      description: Sends a user message and receives a bot response with conversation history
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChatRequest'
+      responses:
+        '200':
+          description: Successful response from chatbot
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChatResponse'
+        '400':
+          description: Missing message in request body
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+  /api/chat/history:
+    get:
+      summary: Get conversation history
+      description: Returns the full conversation history
+      responses:
+        '200':
+          description: Conversation history retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HistoryResponse'
+    delete:
+      summary: Clear conversation history
+      description: Clears all conversation history
+      responses:
+        '200':
+          description: History cleared successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MessageResponse'
+components:
+  schemas:
+    Message:
+      type: object
+      required:
+        - role
+        - content
+      properties:
+        role:
+          type: string
+          enum: [user, assistant]
+          description: The role of the message sender
+        content:
+          type: string
+          description: The message content
+      example:
+        role: user
+        content: Hello!
+    ChatRequest:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          type: string
+          description: The user's message to send to the chatbot
+      example:
+        message: Hello, how are you?
+    ChatResponse:
+      type: object
+      required:
+        - response
+        - conversationHistory
+      properties:
+        response:
+          type: string
+          description: The chatbot's response
+        conversationHistory:
+          type: array
+          items:
+            $ref: '#/components/schemas/Message'
+          description: Last 10 messages of conversation history
+      example:
+        response: "Hello! How can I help you today?"
+        conversationHistory:
+          - role: user
+            content: Hello!
+          - role: assistant
+            content: "Hello! How can I help you today?"
+    HealthResponse:
+      type: object
+      required:
+        - status
+        - timestamp
+      properties:
+        status:
+          type: string
+          enum: [ok]
+        timestamp:
+          type: string
+          format: date-time
+      example:
+        status: ok
+        timestamp: "2026-07-28T17:43:08.651Z"
+    ErrorResponse:
+      type: object
+      required:
+        - error
+      properties:
+        error:
+          type: string
+          description: Error message
+      example:
+        error: "Message is required"
+    HistoryResponse:
+      type: object
+      required:
+        - conversationHistory
+      properties:
+        conversationHistory:
+          type: array
+          items:
+            $ref: '#/components/schemas/Message'
+          description: Full conversation history
+      example:
+        conversationHistory:
+          - role: user
+            content: Hello!
+          - role: assistant
+            content: "Hello! How can I help you today?"
+    MessageResponse:
+      type: object
+      required:
+        - message
+      properties:
+        message:
+          type: string
+          description: Status message
+      example:
+        message: "History cleared"
