@@ -1,6 +1,8 @@
 import express, { Request, Response } from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
+import swaggerUi from 'swagger-ui-express';
+import YAML from 'yamljs';
 
 dotenv.config();
 
@@ -38,6 +40,9 @@ interface MessageResponse {
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+const swaggerDocument = YAML.load("./docs/openapi.yaml");
+app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
 let conversationHistory: Message[] = [];
 
 app.use(cors());
@@ -49,7 +54,7 @@ app.get('/health', (_req: Request, res: Response<HealthResponse>) => {
 
 app.post('/api/chat', (req: Request<{}, ChatResponse | ErrorResponse, ChatRequest>, res: Response<ChatResponse | ErrorResponse>) => {
   const { message } = req.body;
-  
+
   if (!message) {
     return res.status(400).json({ error: 'Message is required' });
   }
@@ -63,7 +68,7 @@ app.post('/api/chat', (req: Request<{}, ChatResponse | ErrorResponse, ChatReques
     conversationHistory = conversationHistory.slice(-20);
   }
 
-  res.json({ 
+  res.json({
     response: botResponse,
     conversationHistory: conversationHistory.slice(-10)
   });
@@ -80,39 +85,39 @@ app.delete('/api/chat/history', (_req: Request, res: Response<MessageResponse>) 
 
 function generateResponse(message: string, history: Message[]): string {
   const lowerMessage = message.toLowerCase();
-  
+
   if (lowerMessage.includes('hello') || lowerMessage.includes('hi') || lowerMessage.includes('hey')) {
     return 'Hello! How can I help you today?';
   }
-  
+
   if (lowerMessage.includes('bye') || lowerMessage.includes('goodbye')) {
     return 'Goodbye! Have a great day!';
   }
-  
+
   if (lowerMessage.includes('help')) {
     return 'I can help you with basic questions. Try saying hello, asking how I am, or saying goodbye!';
   }
-  
+
   if (lowerMessage.includes('how are you')) {
     return "I'm doing well, thank you for asking! How about you?";
   }
-  
+
   if (lowerMessage.includes('name')) {
     return "I'm a simple chatbot. You can call me ChatBot!";
   }
-  
+
   if (lowerMessage.includes('weather')) {
     return "I don't have access to weather data, but I hope it's nice where you are!";
   }
-  
+
   if (lowerMessage.includes('time')) {
     return `The current time is ${new Date().toLocaleTimeString()}.`;
   }
-  
+
   if (lowerMessage.includes('date')) {
     return `Today is ${new Date().toLocaleDateString()}.`;
   }
-  
+
   if (lowerMessage.includes('joke')) {
     const jokes = [
       "Why don't scientists trust atoms? Because they make up everything!",
@@ -130,7 +135,7 @@ function generateResponse(message: string, history: Message[]): string {
     "That's a good point! What do you think about it?",
     "Interesting perspective! Anything else on your mind?"
   ];
-  
+
   return responses[Math.floor(Math.random() * responses.length)];
 }
 
