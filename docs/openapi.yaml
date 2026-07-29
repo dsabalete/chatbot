@@ -18,6 +18,28 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/HealthResponse'
+  /about:
+    get:
+      summary: Get professional information
+      description: Returns professional summary information from CV
+      responses:
+        '200':
+          description: Professional information retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AboutResponse'
+  /experience:
+    get:
+      summary: Get work experience
+      description: Returns work experience information from CV
+      responses:
+        '200':
+          description: Work experience retrieved successfully
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExperienceResponse'
   /api/chat:
     post:
       summary: Send a message to the chatbot
@@ -162,3 +184,50 @@ components:
           description: Status message
       example:
         message: "History cleared"
+    WorkExperienceItem:
+      type: object
+      required:
+        - role
+        - company
+        - period
+        - achievements
+      properties:
+        role:
+          type: string
+          description: Job title/role
+        company:
+          type: string
+          description: Company name
+        period:
+          type: string
+          description: Employment period
+        achievements:
+          type: array
+          items:
+            type: string
+          description: Key achievements and responsibilities
+      example:
+        role: Senior Full Stack Developer
+        company: LoveToKnow Media Spain
+        period: "November 2019 – January 2026"
+        achievements:
+          - Led frontend architecture for YourDictionary.com (45M+ monthly visitors) using Vue.js and Nuxt.js + AWS serverless stack
+          - Improved Lighthouse performance scores from 55 to 92+, reducing Largest Contentful Paint by 60%
+    ExperienceResponse:
+      type: object
+      required:
+        - experience
+      properties:
+        experience:
+          type: array
+          items:
+            $ref: '#/components/schemas/WorkExperienceItem'
+          description: List of work experiences
+      example:
+        experience:
+          - role: Senior Full Stack Developer
+            company: LoveToKnow Media Spain
+            period: "November 2019 – January 2026"
+            achievements:
+              - Led frontend architecture for YourDictionary.com (45M+ monthly visitors) using Vue.js and Nuxt.js + AWS serverless stack
+              - Improved Lighthouse performance scores from 55 to 92+, reducing Largest Contentful Paint by 60%
