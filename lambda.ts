@@ -1,7 +1,7 @@
-import serverlessExpress from '@codegenie/serverless-express';
-import { app } from './index.js';
+import serverless from '@codegenie/serverless-express';
+import app from './src/app.js';
 
-const serverlessHandler = serverlessExpress({ app });
+const serverlessHandler = serverless({ app });
 
 export const handler = async (event: any, context: any) => {
   return serverlessHandler(event, context);
