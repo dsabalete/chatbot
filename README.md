@@ -6,7 +6,7 @@ Personal assistant chatbot that provides information about professional backgrou
 
 ### Prerequisites
 
-- Node.js 18+
+- Node.js 24+
 - npm
 
 ### Installation
@@ -68,6 +68,43 @@ Swagger UI available at `http://localhost:3000/docs`
 | POST | `/api/chat` | Send message to chatbot |
 | GET | `/api/chat/history` | Get conversation history |
 | DELETE | `/api/chat/history` | Clear conversation history |
+
+## AWS Deployment (SAM)
+
+### Prerequisites
+
+- AWS CLI configured
+- AWS SAM CLI installed
+
+### Build & Deploy
+
+```bash
+# Build the application
+sam build
+
+# Deploy to AWS
+sam deploy --guided
+
+# Or deploy to a specific stack
+sam deploy --stack-name chatbot-personal --capabilities CAPABILITY_IAM
+```
+
+### Local Testing with SAM
+
+```bash
+# Start local API Gateway
+sam local start-api
+```
+
+### Stack Management
+
+```bash
+# View stack events
+sam list stack-outputs --stack-name chatbot-personal
+
+# Delete the stack
+sam delete --stack-name chatbot-personal
+```
 
 ## Lambda Deployment
 

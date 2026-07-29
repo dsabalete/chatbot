@@ -1,12 +1,7 @@
-import fs from 'fs';
-import path from 'path';
-import { config } from '../config/index.js';
+import cvContent from '../../docs/cv.md';
 import { AboutResponse, ExperienceResponse, WorkExperienceItem } from '../types/index.js';
 
 export function parseProfessionalSummary(): AboutResponse {
-  const cvPath = path.join(config.paths.docs, 'cv.md');
-  const cvContent = fs.readFileSync(cvPath, 'utf-8');
-
   const lines = cvContent.split('\n');
   let inSummary = false;
   const summaryLines: string[] = [];
@@ -53,9 +48,6 @@ export function parseProfessionalSummary(): AboutResponse {
 }
 
 export function parseWorkExperience(): ExperienceResponse {
-  const cvPath = path.join(config.paths.docs, 'cv.md');
-  const cvContent = fs.readFileSync(cvPath, 'utf-8');
-
   const lines = cvContent.split('\n');
   let inExperience = false;
   const experiences: WorkExperienceItem[] = [];

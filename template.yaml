@@ -1,0 +1,55 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+Description: Chatbot Personal - Express on Lambda
+
+Globals:
+  Function:
+    Timeout: 30
+    MemorySize: 128
+    Runtime: nodejs24.x
+    Architectures:
+      - x86_64
+
+Resources:
+  ChatbotFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: lambda.handler
+      Description: Chatbot Personal API
+      Environment:
+        Variables:
+          NODE_ENV: production
+      Events:
+        CatchAll:
+          Type: Api
+          Properties:
+            Path: /{proxy+}
+            Method: ANY
+        Root:
+          Type: Api
+          Properties:
+            Path: /
+            Method: ANY
+    Metadata:
+      BuildMethod: esbuild
+      BuildProperties:
+        EntryPoints:
+          - lambda.ts
+        Loader:
+          - .json=json
+          - .yaml=text
+          - .md=text
+        Minify: true
+        SourceMap: false
+        Target: es2022
+
+Outputs:
+  ChatbotApi:
+    Description: API Gateway endpoint URL
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/"
+  ChatbotFunction:
+    Description: Lambda function ARN
+    Value: !GetAtt ChatbotFunction.Arn
+  ChatbotFunctionIamRole:
+    Description: IAM role created for the function
+    Value: !GetAtt ChatbotFunctionRole.Arn
