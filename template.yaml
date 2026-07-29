@@ -1,3 +1,4 @@
+# yaml-language-server: $schema=https://cfn-schema.cloudformation.amazonaws.com/us-east-1/latest/CloudformationJsonSchema.json
 AWSTemplateFormatVersion: "2010-09-09"
 Transform: AWS::Serverless-2016-10-31
 Description: Chatbot Personal - Express on Lambda
@@ -46,7 +47,7 @@ Resources:
 Outputs:
   ChatbotApi:
     Description: API Gateway endpoint URL
-    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/"
+    Value: !Sub https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/
   ChatbotFunction:
     Description: Lambda function ARN
     Value: !GetAtt ChatbotFunction.Arn
