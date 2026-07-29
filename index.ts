@@ -6,7 +6,6 @@ import YAML from 'yamljs';
 import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import serverless from '@codegenie/serverless-express';
 
 dotenv.config();
 
@@ -63,7 +62,7 @@ interface ExperienceResponse {
   experience: WorkExperienceItem[];
 }
 
-const app = express();
+export const app = express();
 const PORT = process.env.PORT || 3000;
 
 const swaggerDocument = YAML.load("./docs/openapi.yaml");
@@ -279,12 +278,6 @@ function generateResponse(message: string, history: Message[]): string {
 
   return responses[Math.floor(Math.random() * responses.length)];
 }
-
-const serverlessHandler = serverless({ app });
-
-export const handler = async (event: any, context: any) => {
-  return serverlessHandler(event, context);
-};
 
 if (process.env.NODE_ENV !== 'production') {
   app.listen(PORT, () => {
