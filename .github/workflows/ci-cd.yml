@@ -57,8 +57,6 @@ jobs:
 
       - name: Install SAM CLI
         uses: aws-actions/setup-sam@v2
-        with:
-          version: 'latest'
 
       - name: Build with SAM
         run: sam build
@@ -94,8 +92,6 @@ jobs:
 
       - name: Install SAM CLI
         uses: aws-actions/setup-sam@v2
-        with:
-          version: 'latest'
 
       - name: Deploy with SAM
         run: |
