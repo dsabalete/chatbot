@@ -140,3 +140,34 @@ Static assets (`docs/openapi.yaml`, `docs/cv.md`) are inlined into the bundle at
 |----------|---------|-------------|
 | `PORT` | `3000` | Server port |
 | `NODE_ENV` | `development` | Environment mode |
+
+## Versioning
+
+This project uses [semantic-release](https://semantic-release.gitbook.io/semantic-release/) for automatic versioning based on [conventional commits](https://www.conventionalcommits.org/).
+
+### Commit Format
+
+Use the following commit message format for automatic version bumps:
+
+```
+<type>[optional scope]: <description>
+```
+
+| Type | Version bump | Example |
+|------|-------------|---------|
+| `feat` | minor | `feat: add new chat endpoint` |
+| `fix` | patch | `fix: correct health endpoint response` |
+| `perf` | patch | `perf: optimize CV parsing` |
+| `refactor` | patch | `refactor: simplify config module` |
+| `docs` | none | `docs: update README` |
+| `chore` | none | `chore: update dependencies` |
+| `BREAKING CHANGE` | major | `feat!: drop Node.js 18 support` |
+
+### On Push to Main
+
+1. Runs tests and type checking
+2. Builds with SAM
+3. Deploys to AWS
+4. Automatically bumps version and creates GitHub Release
+
+The version is visible in the `/health` endpoint response.
