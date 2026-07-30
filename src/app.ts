@@ -11,7 +11,12 @@ const swaggerDocument = YAML.parse(openapiYaml);
 
 app.use(cors());
 app.use(express.json());
-app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
+// AWS_LAMBDA_FUNCTION_NAME is only set in real Lambda, not in SAM local
+if (!process.env.AWS_LAMBDA_FUNCTION_NAME) {
+  app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+}
+
 app.use(routes);
 
 export default app;

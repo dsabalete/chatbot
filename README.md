@@ -27,6 +27,18 @@ Server runs on `http://localhost:3000`
 
 Swagger UI available at `http://localhost:3000/docs`
 
+## Production API
+
+**Base URL:** `https://qzeb7vvsok.execute-api.us-east-1.amazonaws.com/Prod/`
+
+| Endpoint | Production URL |
+|----------|----------------|
+| Health | `https://qzeb7vvsok.execute-api.us-east-1.amazonaws.com/Prod/health` |
+| About | `https://qzeb7vvsok.execute-api.us-east-1.amazonaws.com/Prod/about` |
+| Experience | `https://qzeb7vvsok.execute-api.us-east-1.amazonaws.com/Prod/experience` |
+| Chat | `https://qzeb7vvsok.execute-api.us-east-1.amazonaws.com/Prod/api/chat` |
+| Swagger UI | `https://qzeb7vvsok.execute-api.us-east-1.amazonaws.com/Prod/docs` |
+
 ## Project Structure
 
 ```
@@ -47,7 +59,7 @@ Swagger UI available at `http://localhost:3000/docs`
 ├── lambda.ts             # AWS Lambda entry
 ├── docs/
 │   ├── openapi.yaml      # API specification
-│   └── cv.md             # CV data source
+│   └── cv.md             # CV data source (inlined at build via esbuild)
 └── types.d.ts            # External type declarations
 ```
 
@@ -111,6 +123,8 @@ sam delete --stack-name chatbot-personal
 The app uses `@codegenie/serverless-express` to run on AWS Lambda.
 
 Entry point: `lambda.ts`
+
+Static assets (`docs/openapi.yaml`, `docs/cv.md`) are inlined into the bundle at build time via esbuild loaders (`.yaml=text`, `.md=text`), so no separate file copying is needed.
 
 ## Scripts
 

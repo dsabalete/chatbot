@@ -15,6 +15,7 @@ export interface ChatResponse {
 export interface HealthResponse {
   status: string;
   timestamp: string;
+  version: string;
 }
 
 export interface ErrorResponse {
