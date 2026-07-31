@@ -1,13 +1,12 @@
 import { readFileSync } from 'fs';
-import { resolve, dirname } from 'path';
-import { fileURLToPath } from 'url';
+import { resolve } from 'path';
 import { AboutResponse, ExperienceResponse, WorkExperienceItem } from '../types/index.js';
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
-const cvContent = readFileSync(resolve(__dirname, '../../docs/cv.md'), 'utf8');
+const cvPath = resolve(process.cwd(), "docs/cv.md");
+const cv = readFileSync(cvPath, "utf8");
 
 export function parseProfessionalSummary(): AboutResponse {
-  const lines = cvContent.split('\n');
+  const lines = cv.split('\n');
   let inSummary = false;
   const summaryLines: string[] = [];
   let name = 'David Sabalete Rodríguez';
@@ -53,7 +52,7 @@ export function parseProfessionalSummary(): AboutResponse {
 }
 
 export function parseWorkExperience(): ExperienceResponse {
-  const lines = cvContent.split('\n');
+  const lines = cv.split('\n');
   let inExperience = false;
   const experiences: WorkExperienceItem[] = [];
   let currentExp: Partial<WorkExperienceItem> = {};
