@@ -16,12 +16,6 @@
       }
     ],
     "@semantic-release/release-notes-generator",
-    [
-      "@semantic-release/github",
-      {
-        "assets": ["lambda.zip"]
-      }
-    ],
-    "@semantic-release/npm"
+    "@semantic-release/github"
   ]
 }
