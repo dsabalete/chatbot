@@ -2,11 +2,15 @@ import express from 'express';
 import cors from 'cors';
 import swaggerUi from 'swagger-ui-express';
 import YAML from 'yamljs';
-import openapiYaml from '../docs/openapi.yaml';
+import { readFileSync } from 'fs';
+import { resolve, dirname } from 'path';
+import { fileURLToPath } from 'url';
 import routes from './routes/index.js';
 
+const __dirname = dirname(fileURLToPath(import.meta.url));
 const app = express();
 
+const openapiYaml = readFileSync(resolve(__dirname, '../docs/openapi.yaml'), 'utf8');
 const swaggerDocument = YAML.parse(openapiYaml);
 
 app.use(cors());

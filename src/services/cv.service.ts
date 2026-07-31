@@ -1,5 +1,10 @@
-import cvContent from '../../docs/cv.md';
+import { readFileSync } from 'fs';
+import { resolve, dirname } from 'path';
+import { fileURLToPath } from 'url';
 import { AboutResponse, ExperienceResponse, WorkExperienceItem } from '../types/index.js';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const cvContent = readFileSync(resolve(__dirname, '../../docs/cv.md'), 'utf8');
 
 export function parseProfessionalSummary(): AboutResponse {
   const lines = cvContent.split('\n');

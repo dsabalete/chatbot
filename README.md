@@ -37,7 +37,7 @@ Swagger UI available at `http://localhost:3000/docs`
 | About      | `https://pnq6w5fer4.execute-api.us-east-1.amazonaws.com/Prod/about`      |
 | Experience | `https://pnq6w5fer4.execute-api.us-east-1.amazonaws.com/Prod/experience` |
 | Chat       | `https://pnq6w5fer4.execute-api.us-east-1.amazonaws.com/Prod/api/chat`   |
-| Swagger UI | `https://pnq6w5fer4.execute-api.us-east-1.amazonaws.com/Prod/docs`       |
+| Swagger UI | `http://localhost:3000/docs`                                             |
 
 ## Project Structure
 
