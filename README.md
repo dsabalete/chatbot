@@ -29,15 +29,15 @@ Swagger UI available at `http://localhost:3000/docs`
 
 ## Production API
 
-**Base URL:** `https://qzeb7vvsok.execute-api.us-east-1.amazonaws.com/Prod/`
+**Base URL:** `https://pnq6w5fer4.execute-api.us-east-1.amazonaws.com/Prod/`
 
-| Endpoint | Production URL |
-|----------|----------------|
-| Health | `https://qzeb7vvsok.execute-api.us-east-1.amazonaws.com/Prod/health` |
-| About | `https://qzeb7vvsok.execute-api.us-east-1.amazonaws.com/Prod/about` |
-| Experience | `https://qzeb7vvsok.execute-api.us-east-1.amazonaws.com/Prod/experience` |
-| Chat | `https://qzeb7vvsok.execute-api.us-east-1.amazonaws.com/Prod/api/chat` |
-| Swagger UI | `https://qzeb7vvsok.execute-api.us-east-1.amazonaws.com/Prod/docs` |
+| Endpoint   | Production URL                                                           |
+| ---------- | ------------------------------------------------------------------------ |
+| Health     | `https://pnq6w5fer4.execute-api.us-east-1.amazonaws.com/Prod/health`     |
+| About      | `https://pnq6w5fer4.execute-api.us-east-1.amazonaws.com/Prod/about`      |
+| Experience | `https://pnq6w5fer4.execute-api.us-east-1.amazonaws.com/Prod/experience` |
+| Chat       | `https://pnq6w5fer4.execute-api.us-east-1.amazonaws.com/Prod/api/chat`   |
+| Swagger UI | `https://pnq6w5fer4.execute-api.us-east-1.amazonaws.com/Prod/docs`       |
 
 ## Project Structure
 
@@ -72,13 +72,13 @@ Swagger UI available at `http://localhost:3000/docs`
 
 ## API Endpoints
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| GET | `/health` | Health check |
-| GET | `/about` | Professional summary |
-| GET | `/experience` | Work experience |
-| POST | `/api/chat` | Send message to chatbot |
-| GET | `/api/chat/history` | Get conversation history |
+| Method | Endpoint            | Description                |
+| ------ | ------------------- | -------------------------- |
+| GET    | `/health`           | Health check               |
+| GET    | `/about`            | Professional summary       |
+| GET    | `/experience`       | Work experience            |
+| POST   | `/api/chat`         | Send message to chatbot    |
+| GET    | `/api/chat/history` | Get conversation history   |
 | DELETE | `/api/chat/history` | Clear conversation history |
 
 ## AWS Deployment (SAM)
@@ -128,17 +128,17 @@ Static assets (`docs/openapi.yaml`, `docs/cv.md`) are inlined into the bundle at
 
 ## Scripts
 
-| Command | Description |
-|---------|-------------|
-| `npm run dev` | Start development server |
-| `npm run build` | Compile TypeScript |
-| `npm start` | Run production server |
+| Command         | Description              |
+| --------------- | ------------------------ |
+| `npm run dev`   | Start development server |
+| `npm run build` | Compile TypeScript       |
+| `npm start`     | Run production server    |
 
 ## Environment Variables
 
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `PORT` | `3000` | Server port |
+| Variable   | Default       | Description      |
+| ---------- | ------------- | ---------------- |
+| `PORT`     | `3000`        | Server port      |
 | `NODE_ENV` | `development` | Environment mode |
 
 ## Versioning
@@ -153,15 +153,15 @@ Use the following commit message format for automatic version bumps:
 <type>[optional scope]: <description>
 ```
 
-| Type | Version bump | Example |
-|------|-------------|---------|
-| `feat` | minor | `feat: add new chat endpoint` |
-| `fix` | patch | `fix: correct health endpoint response` |
-| `perf` | patch | `perf: optimize CV parsing` |
-| `refactor` | patch | `refactor: simplify config module` |
-| `docs` | none | `docs: update README` |
-| `chore` | none | `chore: update dependencies` |
-| `BREAKING CHANGE` | major | `feat!: drop Node.js 18 support` |
+| Type              | Version bump | Example                                 |
+| ----------------- | ------------ | --------------------------------------- |
+| `feat`            | minor        | `feat: add new chat endpoint`           |
+| `fix`             | patch        | `fix: correct health endpoint response` |
+| `perf`            | patch        | `perf: optimize CV parsing`             |
+| `refactor`        | patch        | `refactor: simplify config module`      |
+| `docs`            | none         | `docs: update README`                   |
+| `chore`           | none         | `chore: update dependencies`            |
+| `BREAKING CHANGE` | major        | `feat!: drop Node.js 18 support`        |
 
 ### On Push to Main
 
