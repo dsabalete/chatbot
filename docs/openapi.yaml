@@ -133,11 +133,46 @@ components:
             content: Hello!
           - role: assistant
             content: "Hello! How can I help you today?"
+    AboutResponse:
+      type: object
+      required:
+        - name
+        - title
+        - location
+        - summary
+        - highlights
+      properties:
+        name:
+          type: string
+          description: Full name
+        title:
+          type: string
+          description: Job title
+        location:
+          type: string
+          description: Location and work mode
+        summary:
+          type: string
+          description: Professional summary
+        highlights:
+          type: array
+          items:
+            type: string
+          description: Summary highlights
+      example:
+        name: David Sabalete Rodríguez
+        title: Senior Full Stack Developer
+        location: Barcelona, Spain · Remote
+        summary: "Senior Full Stack Developer with 20+ years building performant, accessible web applications using Vue.js, Nuxt.js, and modern JavaScript."
+        highlights:
+          - "Reduced initial load times by up to 45% through code splitting, lazy loading, and optimized asset delivery"
+          - "Built 20+ reusable component libraries adopted across multiple teams"
     HealthResponse:
       type: object
       required:
         - status
         - timestamp
+        - version
       properties:
         status:
           type: string
@@ -145,9 +180,13 @@ components:
         timestamp:
           type: string
           format: date-time
+        version:
+          type: string
+          description: Application version
       example:
         status: ok
         timestamp: "2026-07-28T17:43:08.651Z"
+        version: "1.0.0"
     ErrorResponse:
       type: object
       required:
