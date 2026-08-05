@@ -20,6 +20,23 @@ Resources:
       Environment:
         Variables:
           NODE_ENV: production
+          BEDROCK_MODEL_ID: anthropic.claude-haiku-4-5-20251001-v1:0
+          BEDROCK_MAX_TOKENS: "1024"
+          DYNAMODB_TABLE_NAME: chatbot-conversations
+      Policies:
+        - Version: "2012-10-17"
+          Statement:
+            - Effect: Allow
+              Action:
+                - bedrock:InvokeModel
+              Resource: "*"
+            - Effect: Allow
+              Action:
+                - dynamodb:PutItem
+                - dynamodb:GetItem
+                - dynamodb:Query
+                - dynamodb:DeleteItem
+              Resource: !Sub "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/chatbot-conversations"
       Events:
         CatchAll:
           Type: Api

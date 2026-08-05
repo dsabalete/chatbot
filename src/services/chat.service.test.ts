@@ -21,39 +21,39 @@ describe('Chat Service', () => {
   });
 
   describe('addToHistory', () => {
-    it('should add a message to history', () => {
+    it('should add a message to history', async () => {
       const msg: Message = { role: 'user', content: 'hello' };
-      addToHistory(msg);
+      await addToHistory(msg);
       expect(getHistory()).toEqual([msg]);
     });
 
-    it('should preserve order of messages', () => {
+    it('should preserve order of messages', async () => {
       const msg1: Message = { role: 'user', content: 'first' };
       const msg2: Message = { role: 'assistant', content: 'second' };
-      addToHistory(msg1);
-      addToHistory(msg2);
+      await addToHistory(msg1);
+      await addToHistory(msg2);
       expect(getHistory()).toEqual([msg1, msg2]);
     });
   });
 
   describe('clearHistory', () => {
-    it('should reset history to empty', () => {
-      addToHistory({ role: 'user', content: 'test' });
+    it('should reset history to empty', async () => {
+      await addToHistory({ role: 'user', content: 'test' });
       clearHistory();
       expect(getHistory()).toEqual([]);
     });
   });
 
   describe('getRecentHistory', () => {
-    it('should return all messages when fewer than 10', () => {
-      addToHistory({ role: 'user', content: '1' });
-      addToHistory({ role: 'assistant', content: '2' });
+    it('should return all messages when fewer than 10', async () => {
+      await addToHistory({ role: 'user', content: '1' });
+      await addToHistory({ role: 'assistant', content: '2' });
       expect(getRecentHistory()).toHaveLength(2);
     });
 
-    it('should return only the last 10 messages', () => {
+    it('should return only the last 10 messages', async () => {
       for (let i = 0; i < 15; i++) {
-        addToHistory({ role: 'user', content: `msg ${i}` });
+        await addToHistory({ role: 'user', content: `msg ${i}` });
       }
       const recent = getRecentHistory();
       expect(recent).toHaveLength(10);
@@ -62,17 +62,17 @@ describe('Chat Service', () => {
   });
 
   describe('trimHistory', () => {
-    it('should not trim when under limit', () => {
+    it('should not trim when under limit', async () => {
       for (let i = 0; i < 10; i++) {
-        addToHistory({ role: 'user', content: `msg ${i}` });
+        await addToHistory({ role: 'user', content: `msg ${i}` });
       }
       trimHistory();
       expect(getHistory()).toHaveLength(10);
     });
 
-    it('should trim to 20 messages when over limit', () => {
+    it('should trim to 20 messages when over limit', async () => {
       for (let i = 0; i < 25; i++) {
-        addToHistory({ role: 'user', content: `msg ${i}` });
+        await addToHistory({ role: 'user', content: `msg ${i}` });
       }
       trimHistory();
       expect(getHistory()).toHaveLength(20);

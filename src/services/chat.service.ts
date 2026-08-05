@@ -1,20 +1,67 @@
-import { Message } from '../types/index.js';
+import { v4 as uuidv4 } from 'uuid';
+import { Message, ConversationMessage } from '../types/index.js';
+import { invokeClaude } from './bedrock.service.js';
+import { saveMessage, getConversationHistory, deleteConversationHistory } from './dynamodb.service.js';
 
 const MAX_HISTORY = 20;
 const RESPONSE_WINDOW = 10;
 
 let conversationHistory: Message[] = [];
+let currentConversationId: string = uuidv4();
 
 export function getHistory(): Message[] {
   return conversationHistory;
 }
 
-export function addToHistory(message: Message): void {
+export function generateConversationId(): string {
+  return uuidv4();
+}
+
+export async function addToHistory(message: Message, conversationId?: string): Promise<string> {
+  const cid = conversationId || currentConversationId;
+  const timestamp = Date.now();
+
+  try {
+    await saveMessage({
+      conversationId: cid,
+      timestamp,
+      role: message.role,
+      content: message.content,
+    });
+  } catch (error) {
+    console.error('Failed to save to DynamoDB:', error);
+  }
+
   conversationHistory.push(message);
+  trimHistory();
+
+  return cid;
+}
+
+export async function getHistoryFromDb(conversationId: string): Promise<Message[]> {
+  try {
+    const messages = await getConversationHistory(conversationId);
+    return messages.map(msg => ({
+      role: msg.role,
+      content: msg.content,
+    }));
+  } catch (error) {
+    console.error('Failed to fetch from DynamoDB:', error);
+    return conversationHistory;
+  }
 }
 
 export function clearHistory(): void {
   conversationHistory = [];
+}
+
+export async function clearHistoryFromDb(conversationId: string): Promise<void> {
+  try {
+    await deleteConversationHistory(conversationId);
+  } catch (error) {
+    console.error('Failed to clear DynamoDB history:', error);
+  }
+  clearHistory();
 }
 
 export function getRecentHistory(): Message[] {
@@ -25,6 +72,15 @@ export function trimHistory(): void {
   if (conversationHistory.length > MAX_HISTORY) {
     conversationHistory = conversationHistory.slice(-MAX_HISTORY);
   }
+}
+
+export async function generateBedrockResponse(messages: Message[]): Promise<string> {
+  const bedrockMessages = messages.map(msg => ({
+    role: msg.role as 'user' | 'assistant',
+    content: msg.content,
+  }));
+
+  return invokeClaude(bedrockMessages);
 }
 
 export function generateResponse(message: string): string {
