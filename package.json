@@ -1,6 +1,6 @@
 {
   "name": "chatbot-dsabalete",
-  "version": "1.4.0",
+  "version": "1.4.1",
   "description": "",
   "type": "module",
   "main": "dist/src/server.js",
