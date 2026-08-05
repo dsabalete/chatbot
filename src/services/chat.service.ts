@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
-import { Message, ConversationMessage } from '../types/index.js';
+import { Message } from '../types/index.js';
 import { invokeClaude } from './bedrock.service.js';
 import { saveMessage, getConversationHistory, deleteConversationHistory } from './dynamodb.service.js';
 
