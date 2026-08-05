@@ -25,7 +25,7 @@ describe('Chat Controller', () => {
   beforeEach(() => {
     clearHistory();
     // Mock DynamoDB to store messages in memory for testing
-    const dbStore = new Map<string, Array<{ role: string; content: string; timestamp: number }>>();
+    const dbStore = new Map<string, Array<{ conversationId: string; role: string; content: string; timestamp: number }>>();
     
     vi.spyOn(dynamodbService, 'saveMessage').mockImplementation(async (message: any) => {
       const key = message.conversationId;
@@ -33,6 +33,7 @@ describe('Chat Controller', () => {
         dbStore.set(key, []);
       }
       dbStore.get(key)!.push({
+        conversationId: message.conversationId,
         role: message.role,
         content: message.content,
         timestamp: message.timestamp,
@@ -40,7 +41,7 @@ describe('Chat Controller', () => {
     });
 
     vi.spyOn(dynamodbService, 'getConversationHistory').mockImplementation(async (conversationId: string) => {
-      return dbStore.get(conversationId) || [];
+      return (dbStore.get(conversationId) || []) as { conversationId: string; role: 'user' | 'assistant'; content: string; timestamp: number; }[];
     });
 
     vi.spyOn(dynamodbService, 'deleteConversationHistory').mockImplementation(async (conversationId: string) => {
