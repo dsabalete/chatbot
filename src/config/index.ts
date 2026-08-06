@@ -14,4 +14,10 @@ export const config = {
     tableName: process.env.DYNAMODB_TABLE_NAME || 'chatbot-conversations',
     region: process.env.AWS_REGION || 'us-east-1',
   },
+  rateLimit: {
+    globalWindowMs: parseInt(process.env.RATE_LIMIT_GLOBAL_WINDOW_MS || '900000'),
+    globalMax: parseInt(process.env.RATE_LIMIT_GLOBAL_MAX || '100'),
+    chatWindowMs: parseInt(process.env.RATE_LIMIT_CHAT_WINDOW_MS || '60000'),
+    chatMax: parseInt(process.env.RATE_LIMIT_CHAT_MAX || '20'),
+  },
 };

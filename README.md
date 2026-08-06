@@ -51,6 +51,8 @@ Swagger UI available at `http://localhost:3000/docs`
 │   ├── controllers/      # Request handlers
 │   │   ├── chat.controller.ts
 │   │   └── cv.controller.ts
+│   ├── middleware/       # Express middleware
+│   │   └── rateLimiter.ts
 │   ├── routes/           # API routes
 │   │   ├── index.ts
 │   │   └── chat.routes.ts
@@ -80,6 +82,17 @@ Swagger UI available at `http://localhost:3000/docs`
 | POST   | `/api/chat`         | Send message to chatbot    |
 | GET    | `/api/chat/history` | Get conversation history   |
 | DELETE | `/api/chat/history` | Clear conversation history |
+
+## Rate Limiting
+
+Requests are rate limited per IP address to protect the API and control Bedrock costs.
+
+| Scope            | Limit                    | Applied to          |
+| ---------------- | ------------------------ | ------------------- |
+| Global           | 100 requests / 15 min    | All endpoints       |
+| Chat             | 20 requests / minute     | `/api/chat/*`       |
+
+When a limit is exceeded, the API responds with `429 Too Many Requests` and a JSON error body, plus standard `RateLimit-*` headers.
 
 ## AWS Deployment (SAM)
 
@@ -140,6 +153,15 @@ Static assets (`docs/openapi.yaml`, `docs/cv.md`) are inlined into the bundle at
 | ---------- | ------------- | ---------------- |
 | `PORT`     | `3000`        | Server port      |
 | `NODE_ENV` | `development` | Environment mode |
+
+### Rate Limit Environment Variables
+
+| Variable                        | Default  | Description                          |
+| ------------------------------- | -------- | ------------------------------------ |
+| `RATE_LIMIT_GLOBAL_WINDOW_MS`   | `900000` | Global window (15 minutes)           |
+| `RATE_LIMIT_GLOBAL_MAX`         | `100`    | Max global requests per window       |
+| `RATE_LIMIT_CHAT_WINDOW_MS`     | `60000`  | Chat window (1 minute)               |
+| `RATE_LIMIT_CHAT_MAX`           | `20`     | Max chat requests per window         |
 
 ## Versioning
 
