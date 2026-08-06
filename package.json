@@ -8,6 +8,7 @@
     "build": "tsc",
     "start": "node dist/src/server.js",
     "dev": "node --watch --loader ./loader.mjs --import tsx src/server.ts",
+    "sam-build": "PATH=$PWD/node_modules/.bin:$PATH sam build",
     "test": "vitest run",
     "test:watch": "vitest",
     "release": "semantic-release"

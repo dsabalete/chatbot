@@ -127,7 +127,7 @@ The secret ARN is available in the `chatbot-personal` stack outputs or by lookin
 
 ```bash
 # Build the application
-sam build
+npm run sam-build
 
 # Deploy to AWS
 sam deploy --guided
@@ -168,6 +168,7 @@ Static assets (`docs/openapi.yaml`, `docs/cv.md`) are inlined into the bundle at
 | `npm run dev`   | Start development server |
 | `npm run build` | Compile TypeScript       |
 | `npm start`     | Run production server    |
+| `npm run sam-build` | Build SAM application |
 
 ## Environment Variables
 
