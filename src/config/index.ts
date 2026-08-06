@@ -20,4 +20,6 @@ export const config = {
     chatWindowMs: parseInt(process.env.RATE_LIMIT_CHAT_WINDOW_MS || '60000'),
     chatMax: parseInt(process.env.RATE_LIMIT_CHAT_MAX || '20'),
   },
+  apiKey: process.env.API_KEY || '',
+  apiKeySecretArn: process.env.API_KEY_SECRET_ARN || '',
 };

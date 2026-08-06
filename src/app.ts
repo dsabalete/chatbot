@@ -5,6 +5,7 @@ import YAML from 'yamljs';
 import openapiContent from "../docs/openapi.yaml";
 import routes from './routes/index.js';
 import { globalLimiter, chatLimiter } from './middleware/rateLimiter.js';
+import { apiKeyMiddleware } from './middleware/apiKey.js';
 
 const app = express();
 
@@ -18,6 +19,8 @@ app.use(globalLimiter);
 if (!process.env.AWS_LAMBDA_FUNCTION_NAME) {
     app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 }
+
+app.use(apiKeyMiddleware);
 
 app.use('/api/chat', chatLimiter);
 app.use(routes);

@@ -12,6 +12,16 @@ Globals:
       - x86_64
 
 Resources:
+  ApiKeySecret:
+    Type: AWS::SecretsManager::Secret
+    Properties:
+      Description: API key for the Chatbot Personal API
+      GenerateSecretString:
+        SecretStringTemplate: '{"apiKey":""}'
+        GenerateStringKey: apiKey
+        ExcludePunctuation: true
+        PasswordLength: 32
+
   ChatbotFunction:
     Type: AWS::Serverless::Function
     Properties:
@@ -23,6 +33,7 @@ Resources:
           BEDROCK_MODEL_ID: us.anthropic.claude-haiku-4-5-20251001-v1:0
           BEDROCK_MAX_TOKENS: "1024"
           DYNAMODB_TABLE_NAME: chatbot-conversations
+          API_KEY_SECRET_ARN: !Ref ApiKeySecret
       Policies:
         - Version: "2012-10-17"
           Statement:
@@ -37,6 +48,10 @@ Resources:
                 - dynamodb:Query
                 - dynamodb:DeleteItem
               Resource: !Sub "arn:aws:dynamodb:${AWS::Region}:${AWS::AccountId}:table/chatbot-conversations"
+            - Effect: Allow
+              Action:
+                - secretsmanager:GetSecretValue
+              Resource: !Ref ApiKeySecret
       Events:
         CatchAll:
           Type: Api

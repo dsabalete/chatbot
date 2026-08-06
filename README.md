@@ -52,6 +52,7 @@ Swagger UI available at `http://localhost:3000/docs`
 │   │   ├── chat.controller.ts
 │   │   └── cv.controller.ts
 │   ├── middleware/       # Express middleware
+│   │   ├── apiKey.ts
 │   │   └── rateLimiter.ts
 │   ├── routes/           # API routes
 │   │   ├── index.ts
@@ -93,6 +94,27 @@ Requests are rate limited per IP address to protect the API and control Bedrock 
 | Chat             | 20 requests / minute     | `/api/chat/*`       |
 
 When a limit is exceeded, the API responds with `429 Too Many Requests` and a JSON error body, plus standard `RateLimit-*` headers.
+
+## API Key Authentication
+
+Every API endpoint (except Swagger UI) requires an API key sent in the `X-API-Key` header. Requests without a valid key receive `401 Unauthorized`.
+
+```
+curl -H "X-API-Key: <your-api-key>" https://pnq6w5fer4.execute-api.us-east-1.amazonaws.com/Prod/health
+```
+
+The key is never committed to the repository:
+
+- **Local development**: read from the `API_KEY` variable in `.env` (gitignored).
+- **Production (AWS)**: stored in AWS Secrets Manager. The SAM template creates a secret and auto-generates a random key on deploy; Lambda fetches it at runtime (cached for the process lifetime) and is granted least-privilege `secretsmanager:GetSecretValue` access.
+
+To retrieve the production key after deploying:
+
+```bash
+aws secretsmanager get-secret-value --secret-id <ApiKeySecretArn> --query SecretString --output text
+```
+
+The secret ARN is available in the `chatbot-personal` stack outputs or by looking up the `ApiKeySecret` resource.
 
 ## AWS Deployment (SAM)
 
@@ -162,6 +184,13 @@ Static assets (`docs/openapi.yaml`, `docs/cv.md`) are inlined into the bundle at
 | `RATE_LIMIT_GLOBAL_MAX`         | `100`    | Max global requests per window       |
 | `RATE_LIMIT_CHAT_WINDOW_MS`     | `60000`  | Chat window (1 minute)               |
 | `RATE_LIMIT_CHAT_MAX`           | `20`     | Max chat requests per window         |
+
+### API Key Environment Variables
+
+| Variable              | Default | Description                                              |
+| --------------------- | ------- | -------------------------------------------------------- |
+| `API_KEY`             | (none)  | API key required via `X-API-Key` header (local dev only) |
+| `API_KEY_SECRET_ARN`  | (none)  | ARN of the Secrets Manager secret (set by SAM in prod)   |
 
 ## Versioning
 

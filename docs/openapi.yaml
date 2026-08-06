@@ -6,6 +6,8 @@ info:
 servers:
   - url: http://localhost:3000
     description: Development server
+security:
+  - ApiKeyAuth: []
 paths:
   /health:
     get:
@@ -18,6 +20,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/HealthResponse'
+        '401':
+          description: Invalid or missing API key
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
   /about:
     get:
       summary: Get professional information
@@ -29,6 +37,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/AboutResponse'
+        '401':
+          description: Invalid or missing API key
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
   /experience:
     get:
       summary: Get work experience
@@ -40,6 +54,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ExperienceResponse'
+        '401':
+          description: Invalid or missing API key
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
   /api/chat:
     post:
       summary: Send a message to the chatbot
@@ -63,6 +83,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+        '401':
+          description: Invalid or missing API key
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
         '429':
           description: Too many requests
           content:
@@ -80,6 +106,12 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/HistoryResponse'
+        '401':
+          description: Invalid or missing API key
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
     delete:
       summary: Clear conversation history
       description: Clears all conversation history
@@ -90,7 +122,19 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/MessageResponse'
+        '401':
+          description: Invalid or missing API key
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
 components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-API-Key
+      description: API key required to access the API. Send the key in the X-API-Key header.
   schemas:
     Message:
       type: object
